@@ -19,8 +19,6 @@ def log_format_json():
             request_uri
             args
             status
-            request_length
-            content_length
             bytes_sent
             body_bytes_sent
             upstream_connect_time
@@ -29,7 +27,11 @@ def log_format_json():
             request_time
             http_referer
             http_user_agent
-            content_type
+            request_length
+            request_content_length=content_length
+            request_content_type=content_type
+            response_content_length=sent_http_content_length
+            response_content_type=sent_http_content_type
             hostname
             pid
     """.strip().split()
