@@ -1,0 +1,18 @@
+log_format json escape=json '{{log_format_json}}';
+
+server_tokens off;
+
+server {
+    listen 80;
+    server_name _;
+
+    access_log /dev/stdout json;
+
+    location / {
+        return 200 "ok";
+    }
+
+    location /api/ {
+        proxy_pass http://localhost:3000;
+    }
+}
