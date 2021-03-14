@@ -1,10 +1,21 @@
 import json
 
-def app(environ, start_response):
+async def app(scope, receive, send):
+    assert scope['type'] == 'http'
+
     data = json.dumps(dict(status='ok', msg='hello'))
     data = data.encode('utf-8')
-    start_response("200 OK", [
-        ("Content-Type", "application/json"),
-        ("Content-Length", str(len(data))),
-    ])
-    return iter([data])
+
+    await send({
+        'type': 'http.response.start',
+        'status': 200,
+        'headers': [
+            (b"Content-Type", b"application/json"),
+            (b"Content-Length", b'%d' % len(data)),
+        ],
+    })
+
+    await send({
+        'type': 'http.response.body',
+        'body': data,
+    })
