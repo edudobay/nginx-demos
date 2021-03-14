@@ -3,8 +3,11 @@ services:
   nginx:
     build: .
     depends_on:
+      - php_app
       - python_app
     ports:
       - '8080:80'
+  php_app:
+    build: ./php
   python_app:
     build: ./python

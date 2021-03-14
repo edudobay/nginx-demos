@@ -12,9 +12,24 @@ server {
         return 200 "ok";
     }
 
-    location /api/ {
+    location /python/ {
         proxy_pass http://python_app:8080;
         proxy_set_header Host $host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location /php/ {
+        include fastcgi_params;
+
+        root /var/www/html;
+
+        fastcgi_pass php_app:9000;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+
+        fastcgi_index index.php;
+        fastcgi_split_path_info ^(.+\.php)(/.*)$;
+
+        rewrite ^(/php/).+$ $1 last;
     }
 }
