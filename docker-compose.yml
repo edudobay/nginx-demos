@@ -2,5 +2,9 @@ version: '3.7'
 services:
   nginx:
     build: .
+    depends_on:
+      - python_app
     ports:
       - '8080:80'
+  python_app:
+    build: ./python
